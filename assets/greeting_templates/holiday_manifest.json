@@ -1,0 +1,307 @@
+{
+  "version": 1,
+  "status": "consumed_by_cloud_social_service",
+  "template_file": "_holiday_pool.json",
+  "templates_per_event": 1,
+  "excluded_events": [
+    "清明",
+    "悼念类纪念日"
+  ],
+  "delivery_rules": {
+    "skip_optouts": true,
+    "merge_with_daily_greeting": false,
+    "no_automatic_resend_on_unknown_delivery": true,
+    "timezone": "Asia/Shanghai",
+    "solar_term_dates_require_yearly_calendar": true,
+    "after_morning_batch_delay_seconds": 180,
+    "require_confirmed_morning_delivery": true,
+    "max_event_messages_per_user_day": 1
+  },
+  "events": [
+    {
+      "id": "new_year",
+      "label": "元旦",
+      "mode": "proactive_candidate",
+      "date_rule": {
+        "calendar": "solar",
+        "month": 1,
+        "day": 1
+      },
+      "template_name": "元旦·新年的第一页"
+    },
+    {
+      "id": "new_year_eve",
+      "label": "除夕",
+      "mode": "proactive_candidate",
+      "date_rule": {
+        "calendar": "lunar_year_last_day"
+      },
+      "template_name": "除夕·给团圆留个位置"
+    },
+    {
+      "id": "spring_festival",
+      "label": "春节",
+      "mode": "proactive_candidate",
+      "date_rule": {
+        "calendar": "lunar",
+        "month": 1,
+        "day": 1
+      },
+      "template_name": "春节·恋恋来拜年"
+    },
+    {
+      "id": "lantern",
+      "label": "元宵节",
+      "mode": "proactive_candidate",
+      "date_rule": {
+        "calendar": "lunar",
+        "month": 1,
+        "day": 15
+      },
+      "template_name": "元宵·圆滚滚的灯谜"
+    },
+    {
+      "id": "labour",
+      "label": "劳动节",
+      "mode": "proactive_candidate",
+      "date_rule": {
+        "calendar": "solar",
+        "month": 5,
+        "day": 1
+      },
+      "template_name": "劳动节·给忙碌打个结"
+    },
+    {
+      "id": "dragon_boat",
+      "label": "端午节",
+      "mode": "proactive_candidate",
+      "date_rule": {
+        "calendar": "lunar",
+        "month": 5,
+        "day": 5
+      },
+      "template_name": "端午·粽叶里的小秘密"
+    },
+    {
+      "id": "mid_autumn",
+      "label": "中秋节",
+      "mode": "proactive_candidate",
+      "date_rule": {
+        "calendar": "lunar",
+        "month": 8,
+        "day": 15
+      },
+      "template_name": "中秋·月亮不挑馅"
+    },
+    {
+      "id": "national",
+      "label": "国庆节",
+      "mode": "proactive_candidate",
+      "date_rule": {
+        "calendar": "solar",
+        "month": 10,
+        "day": 1
+      },
+      "template_name": "国庆·假期的小岔路"
+    },
+    {
+      "id": "little_new_year",
+      "label": "小年",
+      "mode": "merge_greeting",
+      "date_rule": {
+        "calendar": "lunar_regional",
+        "choices": [
+          [
+            12,
+            23
+          ],
+          [
+            12,
+            24
+          ]
+        ],
+        "requires_region_confirmation": true
+      },
+      "template_name": "小年·扫帚上的小蝴蝶结"
+    },
+    {
+      "id": "laba",
+      "label": "腊八节",
+      "mode": "merge_greeting",
+      "date_rule": {
+        "calendar": "lunar",
+        "month": 12,
+        "day": 8
+      },
+      "template_name": "腊八·粥里的小点名"
+    },
+    {
+      "id": "winter_solstice",
+      "label": "冬至",
+      "mode": "merge_greeting",
+      "date_rule": {
+        "calendar": "solar_term",
+        "name": "冬至"
+      },
+      "template_name": "冬至·热气腾腾的小争论"
+    },
+    {
+      "id": "qixi",
+      "label": "七夕",
+      "mode": "preference_or_mention",
+      "date_rule": {
+        "calendar": "lunar",
+        "month": 7,
+        "day": 7
+      },
+      "template_name": "七夕·写给朋友的小纸条"
+    },
+    {
+      "id": "valentine",
+      "label": "情人节",
+      "mode": "preference_or_mention",
+      "date_rule": {
+        "calendar": "solar",
+        "month": 2,
+        "day": 14
+      },
+      "template_name": "情人节·巧克力也给自己留一块"
+    },
+    {
+      "id": "christmas",
+      "label": "圣诞节",
+      "mode": "preference_or_mention",
+      "date_rule": {
+        "calendar": "solar",
+        "month": 12,
+        "day": 25
+      },
+      "template_name": "圣诞·会迷路的小铃铛"
+    },
+    {
+      "id": "halloween",
+      "label": "万圣节",
+      "mode": "preference_or_mention",
+      "date_rule": {
+        "calendar": "solar",
+        "month": 10,
+        "day": 31
+      },
+      "template_name": "万圣节·南瓜的小表情"
+    },
+    {
+      "id": "women",
+      "label": "妇女节",
+      "mode": "confirmed_identity_or_mention",
+      "date_rule": {
+        "calendar": "solar",
+        "month": 3,
+        "day": 8
+      },
+      "template_name": "妇女节·按自己的心意生长"
+    },
+    {
+      "id": "children",
+      "label": "儿童节",
+      "mode": "confirmed_identity_or_mention",
+      "date_rule": {
+        "calendar": "solar",
+        "month": 6,
+        "day": 1
+      },
+      "template_name": "儿童节·给好奇心放个假"
+    },
+    {
+      "id": "teachers",
+      "label": "教师节",
+      "mode": "confirmed_identity_or_mention",
+      "date_rule": {
+        "calendar": "solar",
+        "month": 9,
+        "day": 10
+      },
+      "template_name": "教师节·给问号一点耐心"
+    },
+    {
+      "id": "mothers",
+      "label": "母亲节",
+      "mode": "confirmed_identity_or_mention",
+      "date_rule": {
+        "calendar": "nth_weekday",
+        "month": 5,
+        "weekday": "Sunday",
+        "occurrence": 2
+      },
+      "template_name": "母亲节·也照顾那个会累的人"
+    },
+    {
+      "id": "fathers",
+      "label": "父亲节",
+      "mode": "confirmed_identity_or_mention",
+      "date_rule": {
+        "calendar": "nth_weekday",
+        "month": 6,
+        "weekday": "Sunday",
+        "occurrence": 3
+      },
+      "template_name": "父亲节·不用一直当大力士"
+    },
+    {
+      "id": "birthday",
+      "label": "用户生日",
+      "mode": "confirmed_birthday",
+      "date_rule": {
+        "calendar": "confirmed_user_date"
+      },
+      "template_name": "生日·只属于今天的小蜡烛"
+    }
+  ],
+  "solar_terms_proposal": {
+    "status": "templates_written_and_used_by_cloud_service",
+    "seasons": {
+      "春季": [
+        "立春",
+        "雨水",
+        "惊蛰",
+        "春分",
+        "谷雨"
+      ],
+      "夏季": [
+        "立夏",
+        "小满",
+        "芒种",
+        "夏至",
+        "小暑",
+        "大暑"
+      ],
+      "秋季": [
+        "立秋",
+        "处暑",
+        "白露",
+        "秋分",
+        "寒露",
+        "霜降"
+      ],
+      "冬季": [
+        "立冬",
+        "小雪",
+        "大雪",
+        "冬至",
+        "小寒",
+        "大寒"
+      ]
+    },
+    "excluded": [
+      "清明"
+    ],
+    "shared_existing_template": {
+      "冬至": "winter_solstice"
+    },
+    "notes": [
+      "日期按当年北京时间核定，不直接固定公历日。",
+      "节气不是当地实时天气；不凭小雪、大雪的名称断言用户所在地正在下雪。"
+    ],
+    "source": "https://igsnrr.cas.cn/cbkx/kpyd/zybk/qhzy/202009/t20200910_5692918.html",
+    "template_file": "_solar_term_pool.json"
+  }
+}

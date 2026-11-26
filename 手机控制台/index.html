@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#101827">
+  <meta name="referrer" content="no-referrer">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/app.css">
+  <title>社交机器人控制台</title>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="brand-icon">恋</span><div><strong>社交机器人</strong><small>手机控制台</small></div></div>
+    <select id="page-select" class="page-select hidden" aria-label="选择功能页">
+      <option value="overview">概况</option><option value="private">私信</option><option value="comments">评论</option><option value="greetings">问候</option><option value="birthdays">生日</option><option value="content">创作</option><option value="station">小站</option><option value="persona">人格</option><option value="knowledge">知识</option><option value="learning">学习</option><option value="media">媒体</option><option value="recognition">识图</option><option value="safety">安全</option><option value="health">健康</option><option value="settings">设置</option><option value="logs">日志</option>
+    </select>
+    <button id="refresh" class="icon-button" type="button" title="刷新状态" aria-label="刷新状态">↻</button>
+  </header>
+  <main>
+    <section id="login-view" class="login-card panel hidden">
+      <div class="login-art"><div class="login-stage" aria-hidden="true"><img class="art-base" src="/koishi-welcome.png" alt=""><img class="art-part art-hair" src="/koishi-welcome.png" alt=""><img class="art-part art-sleeves" src="/koishi-welcome.png" alt=""><img class="art-part art-skirt" src="/koishi-welcome.png" alt=""></div></div>
+      <div class="eyebrow">首次连接</div>
+      <h1>输入配对码</h1>
+      <p class="muted">配对码只在电脑首次启动控制台时显示。这里不会调用模型，也不会发送私信。</p>
+      <form id="login-form">
+        <label for="pairing-code">配对码</label>
+        <input id="pairing-code" name="pairing-code" type="password" autocomplete="one-time-code" required>
+        <label for="device-name">设备名称（可选）</label>
+        <input id="device-name" type="text" maxlength="40" autocomplete="off" placeholder="例如：我的手机">
+        <label class="login-mode"><input id="login-read-only" type="checkbox">只查看状态，不修改或启停</label>
+        <button class="primary full" type="submit">进入控制台</button>
+      </form>
+    </section>
+
+    <div id="dashboard" class="hidden">
+      <section class="hero panel">
+        <div class="hero-copy"><div id="hero-eyebrow" class="eyebrow">KOISHI · CONTROL</div><h1 id="hero-title">概况</h1><p id="hero-subtitle" class="muted">看见今天发生的事</p><p class="hero-status"><span id="state-light" class="state-light" aria-hidden="true"></span><span id="overall-state">正在读取…</span></p></div>
+        <div class="character-stage" aria-hidden="true">
+          <img id="art-base" class="art-base" src="/koishi-dance.png" alt="">
+          <img id="art-hair" class="art-part art-hair" src="/koishi-dance.png" alt="">
+          <img id="art-sleeves" class="art-part art-sleeves" src="/koishi-dance.png" alt="">
+          <img id="art-skirt" class="art-part art-skirt" src="/koishi-dance.png" alt="">
+        </div>
+      </section>
+      <p id="updated-at" class="updated-at muted">—</p>
+
+      <nav class="tabs" aria-label="控制台页面">
+        <button data-tab="overview" class="active" type="button">概况</button>
+        <button data-tab="private" type="button">私信</button>
+        <button data-tab="comments" type="button">评论</button>
+        <button data-tab="greetings" type="button">问候</button>
+        <button data-tab="birthdays" type="button">生日</button>
+        <button data-tab="content" type="button">创作</button>
+        <button data-tab="station" type="button">小站</button>
+        <button data-tab="persona" type="button">人格</button>
+        <button data-tab="knowledge" type="button">知识</button>
+        <button data-tab="learning" type="button">学习</button>
+        <button data-tab="media" type="button">媒体</button>
+        <button data-tab="recognition" type="button">识图</button>
+        <button data-tab="safety" type="button">安全</button>
+        <button data-tab="health" type="button">健康</button>
+        <button data-tab="settings" type="button">设置</button>
+        <button data-tab="logs" type="button">日志</button>
+      </nav>
+      <div id="feature-toolbar" class="feature-toolbar hidden"><input id="feature-search" type="search" placeholder="搜索 45 个功能开关" aria-label="搜索功能开关"><span id="feature-count"></span></div>
+
+      <section id="tab-overview" class="tab-content">
+        <div id="alerts" class="notice hidden"></div>
+        <div id="restart-note" class="notice amber hidden">设置已保存。重启机器人后生效。</div>
+        <div class="stats-grid">
+          <article class="panel stat"><span>今日评论</span><strong id="stat-comments">—</strong></article>
+          <article class="panel stat"><span>今日分享</span><strong id="stat-shares">—</strong></article>
+          <article class="panel stat"><span>今日模型调用</span><strong id="stat-calls">—</strong></article>
+          <article class="panel stat"><span>今日输入 token</span><strong id="stat-tokens">—</strong></article>
+          <article class="panel stat"><span>今日输出 token</span><strong id="stat-output-tokens">—</strong></article>
+          <article class="panel stat"><span>今日缓存 token</span><strong id="stat-cached-tokens">—</strong></article>
+          <article class="panel stat"><span>今日粉丝感谢</span><strong id="stat-fan-thanks">—</strong></article>
+        </div>
+        <section class="panel section-card"><h2>机器人进程</h2><div id="processes" class="process-list"></div></section>
+        <section class="panel section-card"><h2>今日动作明细</h2><div id="daily-details" class="kv-list"></div><div id="action-details" class="kv-list"></div></section>
+        <section class="panel section-card"><h2>过去 24 小时</h2><div id="rounds" class="kv-list"></div><div id="events" class="kv-list"></div></section>
+        <section class="panel section-card"><h2>运行环境</h2><div id="environment" class="kv-list"></div></section>
+        <section class="panel section-card"><h2>运行控制</h2><p class="muted">启停操作只作用于这个社交机器人。停止机器人后，手机控制台会继续运行。</p><div class="action-row"><button id="start-bot" class="primary" type="button">启动</button><button id="restart-bot" class="secondary" type="button">重启</button><button id="stop-bot" class="danger" type="button">停止</button></div><p id="last-operation" class="muted small"></p></section>
+      </section>
+
+      <section id="tab-private" class="tab-content hidden"><section class="panel section-card feature-page"><h2>私信与聊天</h2><p class="muted">主聊天循环、私信回复和管理员入口。</p><div id="features-private"></div></section></section>
+      <section id="tab-comments" class="tab-content hidden"><section class="panel section-card feature-page"><h2>评论与 @</h2><p class="muted">公开互动相关功能，建议关注回复频率和风险提示。</p><div id="features-comments"></div></section></section>
+      <section id="tab-greetings" class="tab-content hidden"><section class="panel section-card feature-page"><h2>日常问候</h2><p class="muted">早安、晚安和新粉问候。实际发送仍受现有机器人规则约束。</p><div id="features-greetings"></div></section></section>
+      <section id="tab-birthdays" class="tab-content hidden"><section class="panel section-card feature-page"><h2>生日功能</h2><p class="muted">提醒、生日故事和贺卡。</p><div id="features-birthdays"></div></section></section>
+      <section id="tab-content" class="tab-content hidden"><section class="panel section-card feature-page"><h2>内容创作</h2><p class="muted">每周内容与表达素材。</p><div id="features-content"></div></section></section>
+      <section id="tab-station" class="tab-content hidden"><section class="panel section-card feature-page"><h2>小站运营</h2><p class="muted">小站动态、评论监控、模板和配图。</p><div id="features-station"></div></section></section>
+      <section id="tab-persona" class="tab-content hidden"><section class="panel section-card feature-page"><h2>人格与风格</h2><p class="muted">恋恋的人格、歌词点缀、表情与形态。</p><div class="art-chooser"><span>立绘换装</span><button type="button" class="active" data-persona-art="/koishi-aristocrat.png">大小姐</button><button type="button" data-persona-art="/koishi-persona.png">华丽礼服</button></div><div id="features-persona"></div></section></section>
+      <section id="tab-knowledge" class="tab-content hidden"><section class="panel section-card feature-page"><h2>知识库</h2><p class="muted">东方资料和知识辅助。</p><div id="features-knowledge"></div></section></section>
+      <section id="tab-learning" class="tab-content hidden"><section class="panel section-card feature-page"><h2>学习与记忆</h2><p class="muted">长期学习、对话记忆与报告。</p><div id="features-learning"></div></section></section>
+      <section id="tab-media" class="tab-content hidden"><section class="panel section-card feature-page"><h2>视频媒体</h2><p class="muted">视频理解与本地下载方式。</p><div class="art-chooser"><span>立绘换装</span><button type="button" class="active" data-art-choice="/koishi-swim-emerald.png">翠绿</button><button type="button" data-art-choice="/koishi-swim-aqua.png">湖蓝</button><button type="button" data-art-choice="/koishi-swim-lilac.png">淡紫</button></div><div id="features-media"></div></section></section>
+      <section id="tab-recognition" class="tab-content hidden"><section class="panel section-card feature-page"><h2>角色识图</h2><p class="muted">小图识别、样本匹配和纠错积累。</p><div id="features-recognition"></div></section></section>
+      <section id="tab-safety" class="tab-content hidden"><section class="panel section-card feature-page"><h2>安全检查</h2><p class="muted">内容规则、标签检查和模型调用入口。</p><div id="features-safety"></div></section></section>
+      <section id="tab-health" class="tab-content hidden"><section class="panel section-card feature-page"><h2>健康巡检</h2><p class="muted">健康检查与心跳报告。</p><div id="features-health"></div></section></section>
+
+      <section id="tab-settings" class="tab-content hidden">
+        <section class="panel section-card"><h2>常用设置</h2><div id="dry-run-row" class="setting-row"></div><div id="limit-settings"></div></section>
+        <section class="panel section-card"><h2>立绘总览</h2><p class="muted">查看所有页面立绘与三张泳装配色。</p><a class="gallery-link" href="/gallery" target="_blank" rel="noopener">查看立绘总览 ↗</a></section>
+        <section class="panel section-card"><h2>登录设备</h2><p id="session-role" class="muted"></p><p class="muted">配对码拥有管理权限，请不要分享。只读模式仅限制本次登录。撤销丢失设备后，若配对码也可能泄露，请在电脑上重置配对码。</p><div id="session-devices" class="kv-list"></div><button id="refresh-sessions" class="secondary" type="button">刷新设备</button><button id="logout" class="secondary" type="button">退出登录</button></section>
+      </section>
+
+      <section id="tab-logs" class="tab-content hidden">
+        <section class="panel section-card"><h2>最近日志</h2><div class="action-row"><button id="log-supervisor" class="secondary" type="button">守护日志</button><button id="log-health" class="secondary" type="button">健康日志</button></div><pre id="log-content" class="log-box">选择日志后显示。</pre></section>
+      </section>
+    </div>
+  </main>
+  <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+  <script src="/catalog.js" defer></script>
+  <script src="/app.js" defer></script>
+</body>
+</html>

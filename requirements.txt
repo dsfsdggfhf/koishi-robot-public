@@ -1,0 +1,12 @@
+bilibili-api-python>=17.1.4
+httpx>=0.24.0
+qrcode[pil]>=7.4.2
+
+# Optional media understanding extras:
+# - vision model APIs use the existing httpx client; no extra Python package needed
+# - yt-dlp: download Bilibili videos for keyframes/audio analysis
+# - faster-whisper or openai-whisper: speech-to-text
+# Install manually if you enable extract_keyframes/transcribe_audio.
+# yt-dlp>=2024.1.0
+# faster-whisper>=1.0.0
+# openai-whisper>=20231117

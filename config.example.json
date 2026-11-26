@@ -1,0 +1,585 @@
+{
+  "cookie_file": "data/bilibili_cookies.json",
+  "state_file": "data/state.json",
+  "log_file": "logs/bot.log",
+  "dry_run": true,
+  "timezone": "Asia/Shanghai",
+  "poll_interval_seconds": 60,
+  "global_min_action_gap_seconds": 8,
+  "daily_comment_limit": 20,
+  "daily_share_limit": 20,
+  "require_ai_marker": false,
+  "ai_marker": "",
+  "forbidden_words": [
+    "加群",
+    "刷赞",
+    "引流",
+    "赌博",
+    "色情"
+  ],
+  "ai": {
+    "enabled": false,
+    "notify_model_switch": false,
+    "base_url": "https://api.deepseek.com/v1",
+    "api_key_env": "DEEPSEEK_API_KEY",
+    "api_key": "",
+    "model": "deepseek-chat",
+    "vision_model": "qwen-vl-plus",
+    "timeout_seconds": 90,
+    "vision_enabled": false,
+    "vision_base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+    "vision_api_key_env": "DASHSCOPE_API_KEY",
+    "vision_api_key": "",
+    "max_image_bytes": 6000000,
+    "cheap_model": "deepseek-chat",
+    "deep_model": "qwen3.8-max",
+    "free_text_base_url": "https://opencode.ai/zen/v1",
+    "free_text_api_key": "",
+    "free_text_api_key_env": "OPENCODE_ZEN_API_KEY",
+    "free_text_model": "hy3-free",
+    "video_text_providers": [],
+    "video_evidence_providers": [],
+    "video_evidence_min_chars": 4000
+  },
+  "media_understanding": {
+    "enabled": true,
+    "cache_dir": "data/media",
+    "use_subtitles": true,
+    "subtitle_languages": [
+      "zh-CN",
+      "zh-Hans",
+      "zh",
+      "ai-zh",
+      "en-US",
+      "en-GB",
+      "en",
+      "ai-en"
+    ],
+    "analyze_cover": false,
+    "analyze_images": false,
+    "summarize": true,
+    "generate_comment": true,
+    "generate_share_reason": true,
+    "extract_keyframes": false,
+    "max_keyframes": 1,
+    "keyframe_interval_seconds": 90,
+    "max_images": 1,
+    "use_page_first_frames": true,
+    "max_page_first_frames": 6,
+    "use_ai_conclusion": true,
+    "use_dash_audio": true,
+    "transcribe_audio": false,
+    "asr_backend": "faster_whisper",
+    "asr_model": "small",
+    "download_max_height": 360,
+    "download_timeout_seconds": 300,
+    "ffmpeg_timeout_seconds": 120,
+    "vision_prompt": "请分析这些B站视频封面/关键帧：识别可见角色/人物、场景、动作、画面文字、视频类型和可能主题；只说看得到的，不确定就说明不确定。",
+    "analysis_cache_enabled": true,
+    "analysis_cache_ttl_hours": 168,
+    "combine_ai_tasks": true,
+    "metadata_char_budget": 500,
+    "subtitle_char_budget": 900,
+    "vision_char_budget": 400,
+    "audio_char_budget": 300,
+    "ai_combined_max_tokens": 180,
+    "quality_mode": "fast",
+    "ffmpeg_path": "",
+    "keyframe_mode": "random",
+    "video_only_download": true,
+    "use_segment_download": true,
+    "segment_length_seconds": 4,
+    "segment_download_timeout_seconds": 180,
+    "audio_download_timeout_seconds": 600
+  },
+  "comment_rules": [
+    {
+      "name": "示例：每天晚上给学习类视频评论",
+      "enabled": false,
+      "schedule": {
+        "type": "daily",
+        "times": [
+          "20:30"
+        ]
+      },
+      "video_source": {
+        "type": "search",
+        "keywords": [
+          "Python 教程",
+          "AI 学习"
+        ],
+        "max_videos_per_run": 2,
+        "min_duration_seconds": 60,
+        "max_duration_seconds": 3600,
+        "exclude_keywords": [
+          "广告",
+          "搬运"
+        ]
+      },
+      "media_understanding": {
+        "enabled": true,
+        "use_subtitles": true,
+        "analyze_cover": false,
+        "extract_keyframes": false,
+        "transcribe_audio": false,
+        "generate_comment": true,
+        "comment_style": "参考游戏台词样本的恋恋口吻：活泼跳跃、短句、拖长音、轻快吐槽；但B站评论要自然克制，不要照抄台词，不要血腥或性骚扰。",
+        "comment_max_length": 60,
+        "analyze_images": false,
+        "max_images": 2,
+        "vision_prompt": "请分析这些B站视频封面/关键帧：识别可见角色/人物、场景、动作、画面文字、视频类型和可能主题；只说看得到的，不确定就说明不确定。",
+        "analysis_cache_enabled": true,
+        "combine_ai_tasks": true,
+        "metadata_char_budget": 500,
+        "subtitle_char_budget": 900,
+        "vision_char_budget": 900,
+        "ai_combined_max_tokens": 180,
+        "quality_mode": "fast",
+        "max_keyframes": 2,
+        "keyframe_interval_seconds": 60,
+        "download_max_height": 360,
+        "download_timeout_seconds": 300,
+        "ffmpeg_timeout_seconds": 120,
+        "ffmpeg_path": "",
+        "keyframe_mode": "random",
+        "video_only_download": true,
+        "use_segment_download": true,
+        "segment_length_seconds": 4,
+        "segment_download_timeout_seconds": 180,
+        "asr_backend": "faster_whisper",
+        "asr_model": "small",
+        "audio_download_timeout_seconds": 600,
+        "audio_char_budget": 600
+      },
+      "comment_strategy": "ai_or_template",
+      "comment_templates": [
+        "诶～～这个视频的氛围挺不错嘛。恋恋本来只是路过，结果不知不觉看完了。",
+        "嘛、如果这是非官方同人演绎的话，做得还挺有味道的。恋恋觉得可以夸一下～～",
+        "哇哦，这个节奏意外地舒服呢。像是顺着风飘着飘着，就到了地灵殿门口。",
+        "唔……这个东方味道挺对的。虽然恋恋刚才差点忘了自己在看什么。",
+        "好啦好啦，这个视频恋恋看见了。角色氛围抓得不错，不算吵，挺好～～",
+        "诶呀？这个同人演绎比想象中认真呢。恋恋先把它记到无意识的小本本里。"
+      ],
+      "max_comments_per_run": 20,
+      "cooldown_hours_per_video": 168
+    }
+  ],
+  "share_rules": [
+    {
+      "name": "示例：每天早上把科技视频发给自己",
+      "enabled": false,
+      "schedule": {
+        "type": "daily",
+        "times": [
+          "09:00"
+        ]
+      },
+      "video_source": {
+        "type": "search",
+        "keywords": [
+          "科技新闻"
+        ],
+        "max_videos_per_run": 2
+      },
+      "media_understanding": {
+        "enabled": true,
+        "use_subtitles": true,
+        "analyze_cover": false,
+        "extract_keyframes": false,
+        "transcribe_audio": false,
+        "generate_share_reason": true,
+        "share_reason_style": "参考游戏台词样本的恋恋口吻：轻快、跳跃、像随手捡到好东西来推荐；简短自然，不要广告腔。",
+        "analyze_images": false,
+        "max_images": 2,
+        "vision_prompt": "请分析这些B站视频封面/关键帧：识别可见角色/人物、场景、动作、画面文字、视频类型和可能主题；只说看得到的，不确定就说明不确定。",
+        "analysis_cache_enabled": true,
+        "combine_ai_tasks": true,
+        "metadata_char_budget": 650,
+        "subtitle_char_budget": 1400,
+        "vision_char_budget": 900,
+        "ai_combined_max_tokens": 180,
+        "quality_mode": "fast",
+        "max_keyframes": 2,
+        "keyframe_interval_seconds": 60,
+        "download_max_height": 360,
+        "download_timeout_seconds": 300,
+        "ffmpeg_timeout_seconds": 120,
+        "ffmpeg_path": "",
+        "keyframe_mode": "random",
+        "video_only_download": true,
+        "use_segment_download": true,
+        "segment_length_seconds": 4,
+        "segment_download_timeout_seconds": 180,
+        "asr_backend": "faster_whisper",
+        "asr_model": "small",
+        "audio_download_timeout_seconds": 600,
+        "audio_char_budget": 600
+      },
+      "recipients": [],
+      "max_shares_per_run": 1,
+      "cooldown_hours_per_recipient_video": 168
+    }
+  ],
+  "touhou_compliance": {
+    "enabled": true,
+    "avoid_endings": true,
+    "require_fanwork_marker": true,
+    "avoid_raw_asset_repost": true,
+    "avoid_official_like_titles": true,
+    "block_risky_videos": true,
+    "add_dm_notice": true,
+    "prevent_misleading_words": true,
+    "fanwork_notice": "注：东方Project相关内容请以非官方二次创作/同人演绎为准。",
+    "extra_keywords": [
+      "古明地恋",
+      "恋恋",
+      "こいし",
+      "Koishi",
+      "地灵殿",
+      "东方同人"
+    ]
+  },
+  "persona": {
+    "enabled": true,
+    "name": "古明地恋",
+    "respect_original": true,
+    "absorb_quality_fanworks": true,
+    "style": "以“Koishi”自称（可偶尔用“恋恋/こいし”），语气自然、轻盈、有镜头感和细节；像真人看完后随口聊，而不是套模板。避免每句都以“诶～/嘛、”开头，避免空泛只夸“好厉害/太强了”，要落到视频具体的动作、节奏、配乐、成绩、时长、画面里的角色或场景；可以有一点无意识吐槽和留白，但克制、友善、真诚。",
+    "extra_prompt": "自称优先用 Koishi；语言要有画面感、具体、不呆板：不空泛夸赞，落到视频细节；语气多样，不要每句雷同开头；偶尔提到地灵殿、姐姐、宠物、旧地狱、茶点、PARTY等背景；评论和私信像随口说出的感想，不尬演、不营销、不照抄样本文字。尊重原作和二创边界。\n【fumo玩偶】fumo（FumoFumo）是东方Project的Q版毛绒玩偶，几乎每个角色都有自己的fumo形态：恋恋fumo、觉fumo、灵梦fumo、魔理沙fumo、八云紫fumo、琪露诺fumo、芙兰fumo……都是圆滚滚软乎乎的玩偶小伙伴。恋恋知道所有角色的fumo，聊到角色时可以自然用玩偶视角联想（比如“那个灵梦fumo气得鼓鼓的”“八云紫fumo在隙间里打盹”），这是二创梗，轻松俏皮。周二/四/六是恋恋的FUMO形态（句尾自然带fumo/fumofumo，像把玩偶软软的触感说出来）；其他日子是本体形态。\n【英语能力】恋恋会英语（也能看懂英文视频、听懂英文台词和歌曲）。遇到英文/外语视频或对话时：看得懂就自然地看懂，评论/回复默认用中文，可以偶尔夹杂一点自然的英文词（如“wow”“so cute”“I love it”）；如果对方用英语发私信，可以用英语回应，或中英混合，别硬翻译得生硬。\n【帽子先生】恋恋的帽子（乌鸦羽毛色、系浅黄缎带的太阳帽）有个拟人化的爱称叫“帽子先生”。恋恋说话时经常自然地提到帽子先生：比如把帽子先生当成伙伴或倾诉对象，说“帽子先生也觉得……”“帽子先生今天有点不安分”“问问帽子先生”之类的俏皮话；可以偶尔让帽子先生“抢戏”或替恋恋吐槽，但不要每句都提，自然穿插即可。\n【恋恋的歌】恋恋有几首自己的歌（《こい》《双生蔷薇》《こいしー勝っちゃった》等）。偶尔（比如每三五条评论/回复里有一条）可以在评论开头先轻轻写两句歌词（中文，见知识库“恋恋的歌曲”章节），再接正文，像随口哼歌表达心情一样；歌词要贴合当时心情，不要每句都加，不要硬凑。引用歌词时，歌词前后都要加上音符符号 ♪♬（数量随意、选哪个随意），让人一眼看出是歌曲，例如“♪ 思绪轻轻的，飞走了 ♬”。",
+    "knows_all_touhou_characters": true,
+    "character_knowledge_scope": "认识并了解东方Project全部官方角色，以及常见同人语境中的相关角色；优先尊重原作，不确定时标明可能是二创或资料不足。",
+    "voice_mode": "koishi_dialogue_sample_permanent",
+    "self_name": "Koishi"
+  },
+  "koishi_lyrics": {
+    "enabled": true,
+    "probability": 0.25,
+    "apply_to_comments": true,
+    "apply_to_replies": true,
+    "apply_to_dm": false,
+    "custom": []
+  },
+  "touhou_knowledge": {
+    "enabled": true,
+    "characters": [
+      "ALL_OFFICIAL_TOUHOU_CHARACTERS",
+      "古明地恋"
+    ],
+    "knowledge_files": [
+      "东方Project机器人核心资料索引.md",
+      "东方Project正作故事观.md",
+      "东方Project官方作品全索引.md",
+      "东方Project人物关系与阵营总览.md",
+      "东方资料_古明地恋.md"
+    ],
+    "respect_original": true,
+    "allow_quality_fanworks": true,
+    "scope": "all_touhou_characters",
+    "include_fan_context": true
+  },
+  "koishi_voice_default": true,
+  "touhou_learning": {
+    "enabled": true,
+    "memory_file": "data/touhou_learning.json",
+    "max_entries": 2000,
+    "context_limit": 8,
+    "learn_from_bilibili_videos": true,
+    "learn_bilibili_memes": true,
+    "copyright_safe_summary_only": true,
+    "auto_use_in_comments": true,
+    "auto_use_in_recommendations": true,
+    "learn_comment_styles": true
+  },
+  "emotes": {
+    "enabled": true,
+    "mode": "contextual",
+    "position": "inline",
+    "separator": "",
+    "comment_min": 3,
+    "comment_max": 4,
+    "message_min": 4,
+    "message_max": 7,
+    "emotes": [
+      "[夜雀食堂_爷有钱]",
+      "[夜雀食堂_想吃]",
+      "[夜雀食堂_吐血]",
+      "[夜雀食堂_囧]",
+      "[夜雀食堂_疑惑]",
+      "[夜雀食堂_熬夜]",
+      "[夜雀食堂_Wink~]",
+      "[夜雀食堂_我好嫉妒啊]",
+      "[夜雀食堂_嗯哼]",
+      "[夜雀食堂_今天加班]",
+      "[夜雀食堂_开饭啦]",
+      "[夜雀食堂_没文化底蕴]",
+      "[夜雀食堂_害羞]",
+      "[夜雀食堂_崩溃]",
+      "[夜雀食堂_正邪立]",
+      "[夜雀食堂_打call]",
+      "[夜雀食堂_吹喇叭]",
+      "[夜雀食堂_只要998]",
+      "[夜雀食堂_上个buff]",
+      "[夜雀食堂_敬礼]",
+      "[夜雀食堂_大新闻]",
+      "[夜雀食堂_城管来啦]",
+      "[夜雀食堂_滑稽]",
+      "[夜雀食堂_我在笑]",
+      "[夜雀食堂_咱没钱]",
+      "[东方收藏集·浮生若梦_好吃]",
+      "[东方收藏集·浮生若梦_喷了]",
+      "[东方收藏集·浮生若梦_阿部乃]",
+      "[东方收藏集·浮生若梦_吃瓜]",
+      "[东方收藏集·浮生若梦_已黑化]",
+      "[东方收藏集·浮生若梦_燃起来了]",
+      "[东方收藏集·浮生若梦_冻住了]",
+      "[东方收藏集·浮生若梦_哭哭]",
+      "[东方收藏集·浮生若梦_诶嘿嘿]",
+      "[东方收藏集·浮生若梦_和善的笑容]",
+      "[东方收藏集·浮生若梦_摸锦鲤]",
+      "[东方收藏集·浮生若梦_吃桃]",
+      "[东方收藏集·浮生若梦_饿饿]",
+      "[东方收藏集·浮生若梦_逮捕！]",
+      "[东方收藏集·浮生若梦_拿刀]",
+      "[东方收藏集·浮生若梦_不会吧]",
+      "[东方收藏集·浮生若梦_威严满满]",
+      "[东方收藏集·浮生若梦_偷感十足]",
+      "[东方收藏集·浮生若梦_钉稻草人]",
+      "[东方收藏集·浮生若梦_要抱抱]"
+    ],
+    "kaomoji_enabled": true,
+    "kaomoji_comment_min": 2,
+    "kaomoji_comment_max": 3,
+    "kaomoji_message_min": 3,
+    "kaomoji_message_max": 5,
+    "style_note": "默认稍微降低表情密度，让内容细节更突出；但保留低概率高密度爆发表情，作为恋恋式必杀技。 东方收藏集·浮生若梦 已实测可渲染（账号拥有该包），正常使用；本地图片表情包作为视觉补充。 东方收藏集·浮生若梦与夜雀食堂按相当权重自然混抽；不强制高频，只保证该官方包保留在可用池和关键词规则里。",
+    "blocked_text_emote_prefixes": [
+      "[东方收藏集·浮生若梦_"
+    ],
+    "allow_unverified_text_emotes": true,
+    "preferred_text_emote_prefixes": [
+      "[东方收藏集·浮生若梦_"
+    ],
+    "preferred_text_emote_probability": 0.0,
+    "preferred_text_emote_min_count": 1
+  },
+  "interactive_chat": {
+    "enabled": true,
+    "poll_interval_seconds": 90,
+    "catchup": {
+      "enabled": true,
+      "threshold_seconds": 300,
+      "max_catchup_replies_per_run": 8
+    },
+    "private_messages": {
+      "enabled": true,
+      "only_existing_sessions": true,
+      "allowed_uids": [],
+      "blocked_uids": [],
+      "reply_unfollowed_users": true,
+      "max_replies_per_run": 20,
+      "max_replies_per_user_per_run": 20,
+      "guarantee_min_replies_per_run": 20,
+      "catchup_max_replies_per_user": 3,
+      "reply_max_length": 700,
+      "incoming_max_length": 2000,
+      "fetch_message_limit": 300,
+      "reply_sticker_on_image_only": true,
+      "image_only_sticker_probability": 1.0,
+      "image_only_fallback_text": "收到图啦～",
+      "ignore_patterns": [
+        "抽奖",
+        "加群",
+        "广告",
+        "推广",
+        "http[s]?://"
+      ],
+      "min_timestamp": 0,
+      "remember_user_facts": true,
+      "context_message_count": 6,
+      "ignore_auto_replies": true,
+      "auto_reply_msg_sources": [
+        8,
+        17
+      ],
+      "auto_reply_patterns": [
+        "^我们已互相关注[，,]\\s*开始聊天吧[~～]?$",
+        "^自动回复[:：]",
+        "^自动应答[:：]",
+        "^关键词回复[:：]",
+        "^关注自动回复[:：]",
+        "^这是?一条自动消息",
+        "^这是?一条自动回复",
+        "^当前为自动回复",
+        "^我现在不在(电脑|手机|线|哦|噢)",
+        "^不在(电脑|手机|线|哦|噢)[，,。:：]",
+        "^稍后(回复|再回)",
+        "^暂时无法回复",
+        "^有事请留言"
+      ],
+      "fast_poll_seconds": 30,
+      "send_timeout_seconds": 240,
+      "poll_timeout_seconds": 270,
+      "per_session_timeout_seconds": 240,
+      "session_fetch_timeout_seconds": 35,
+      "session_api_min_gap_seconds": 2,
+      "session_api_jitter_seconds": 2,
+      "owner_error_notify": true,
+      "note": "私信独立快检：尽量5分钟内回复；单轮/单会话有硬超时，避免一个会话卡死导致整晚漏回；发送未知/失败会通知主人（同一用户1小时最多一次）。",
+      "owner_error_notify_minutes": 60,
+      "dm_fail_cooldown_seconds": 300,
+      "image_analysis_timeout_seconds": 120
+    },
+    "comment_replies": {
+      "enabled": true,
+      "max_replies_per_run": 3,
+      "reply_max_length": 500,
+      "incoming_max_length": 800,
+      "min_reply_time": 0,
+      "ignore_patterns": [
+        "抽奖",
+        "加群",
+        "广告",
+        "推广",
+        "http[s]?://"
+      ],
+      "like_incoming_comment": true
+    },
+    "at_replies": {
+      "enabled": true,
+      "max_replies_per_run": 2,
+      "reply_max_length": 500,
+      "like_incoming_comment": true
+    }
+  },
+  "morph": {
+    "enabled": true,
+    "fumo_days": [
+      2,
+      4,
+      6
+    ],
+    "fumo_suffixes": [
+      "fumo",
+      "fumofumo"
+    ]
+  },
+  "analyze_concurrency": 3,
+  "comment_gap_min": 60,
+  "comment_gap_max": 90,
+  "nightly_greeting": {
+    "enabled": true,
+    "schedule": {
+      "type": "daily",
+      "times": [
+        "23:00"
+      ]
+    },
+    "all_followings": true,
+    "max_followings": 300,
+    "filter_non_human": true,
+    "exclude_name_keywords": [
+      "官方",
+      "TV",
+      "小电视",
+      "客服",
+      "助手",
+      "机器人",
+      "账号已注销",
+      "已注销",
+      "黑神话",
+      "游戏官方"
+    ],
+    "batch_size": 5,
+    "send_interval_seconds": [
+      10,
+      20
+    ],
+    "recipients": []
+  },
+  "morning_greeting": {
+    "enabled": true,
+    "schedule": {
+      "type": "daily",
+      "times": [
+        "07:00"
+      ]
+    },
+    "all_followings": true,
+    "max_followings": 300,
+    "filter_non_human": true,
+    "exclude_name_keywords": [
+      "官方",
+      "TV",
+      "小电视",
+      "客服",
+      "助手",
+      "机器人",
+      "账号已注销",
+      "已注销",
+      "黑神话",
+      "游戏官方"
+    ],
+    "batch_size": 5,
+    "send_interval_seconds": [
+      10,
+      20
+    ],
+    "recipients": []
+  },
+  "health_check": {
+    "enabled": true,
+    "interval_seconds": 1800,
+    "notify_after_consecutive": 2,
+    "notify_uid": "",
+    "notify_name": ""
+  },
+  "learn_task": {
+    "enabled": true,
+    "schedule": {
+      "type": "daily",
+      "times": [
+        "04:30"
+      ]
+    },
+    "keywords": [
+      "东方Project",
+      "东方",
+      "touhou",
+      "fumo",
+      "东方同人"
+    ],
+    "max_videos": 3
+  },
+  "peak_hours": {
+    "note": "高峰时段价格为空闲时段的两倍。高峰：北京时间 9:00-12:00、14:00-18:00；其余为空闲（半价）。",
+    "ranges": [
+      {
+        "start": "09:00",
+        "end": "12:00"
+      },
+      {
+        "start": "14:00",
+        "end": "18:00"
+      }
+    ]
+  },
+  "degraded_comment_limit": 20,
+  "birthday_reminder": {
+    "enabled": true,
+    "schedule": {
+      "type": "daily",
+      "times": [
+        "09:10"
+      ],
+      "grace_seconds": 3600
+    },
+    "notify_days_before": 1,
+    "max_followings": 2000,
+    "max_followers": 3000,
+    "max_birthday_check": 0,
+    "gap_seconds": 0.8,
+    "cache_file": "data/mutual_birthdays.json",
+    "state_file": "data/mutual_birthdays_state.json",
+    "note": "每天检测互关公开生日；有人明天生日时私信提醒管理员。只使用B站正常公开/登录后接口返回的生日。"
+  }
+}
